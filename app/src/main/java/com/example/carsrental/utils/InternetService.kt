@@ -18,7 +18,6 @@ class InternetService : Service() {
             sendBroadcast(intent)
         }
         countDownTimer.start()
-
     }
     private val countDownTimer = object : CountDownTimer(2000L, 1) {
         override fun onTick(millisUntilFinished: Long) {

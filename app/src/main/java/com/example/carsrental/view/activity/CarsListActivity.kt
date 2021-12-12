@@ -75,9 +75,8 @@ class CarsListActivity : AppCompatActivity() {
                 },
             ) {
                 Scaffold(
-                    isFloatingActionButtonDocked = true,
                     floatingActionButton = {
-                        FloatingActionButton(onClick = { navigateToAddCar() }) {
+                        FloatingActionButton(backgroundColor = Color.Black, onClick = { navigateToAddCar() }) {
                             Icon(
                                 imageVector = Icons.Default.Add,
                                 contentDescription = "Add",
@@ -95,10 +94,14 @@ class CarsListActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.carToEdit.observe(this) {
+        viewModel.carToEditId.observe(this) {
             val intent = Intent(this, EditCarActivity::class.java)
-            intent.putExtra(car_key, it.apply {})
+            intent.putExtra(car_key, it)
             startActivity(intent)
+        }
+
+        viewModel.carDeleted.observe(this) {
+            Toast.makeText(this, "Car successfully deleted!", Toast.LENGTH_LONG).show()
         }
 
         viewModel.exception.observe(this) {

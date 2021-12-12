@@ -22,7 +22,8 @@ class CarsListViewModel(val carRepository: CarRepository) : ViewModel() {
     private val _exception = MutableLiveData<String>()
     var exception: LiveData<String> = _exception
 
-    var carToEdit = SingleLiveEvent<Car>()
+    var carToEditId = SingleLiveEvent<Int>()
+    var carDeleted = SingleLiveEvent<Boolean>()
 
 
     fun onCarsSearched(searchKey: String) {
@@ -30,11 +31,12 @@ class CarsListViewModel(val carRepository: CarRepository) : ViewModel() {
     }
 
     fun onCarSwipedToDelete(car: Car) {
+        car.id?.let { deleteCar(it) }
         _cars.value = cars.value?.filter { it != car }?.toMutableList()
     }
 
     fun onEditCar(car: Car) {
-        carToEdit.value = car
+        carToEditId.value = car.id
     }
 
     fun fetchCarsData() {
@@ -44,4 +46,6 @@ class CarsListViewModel(val carRepository: CarRepository) : ViewModel() {
     fun syncOfflineData() {
         fetchCarsData()
     }
+
+    fun deleteCar(carId: Int) = carRepository.deleteCar(carId, _exception, carDeleted)
 }

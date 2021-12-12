@@ -7,7 +7,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.carsrental.utils.ImageUtils.toBase64Image
+import com.example.carsrental.utils.toBase64Image
 
 abstract class CarInputViewModel: ViewModel() {
 

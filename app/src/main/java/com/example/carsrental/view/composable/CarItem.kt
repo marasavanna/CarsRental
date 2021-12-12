@@ -32,7 +32,7 @@ import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import com.example.carsrental.R
 import com.example.carsrental.model.Car
-import com.example.carsrental.utils.ImageUtils.toBitmap
+import com.example.carsrental.utils.toBitmap
 import com.example.carsrental.viewmodel.CarsListViewModel
 
 @OptIn(ExperimentalMaterialApi::class)

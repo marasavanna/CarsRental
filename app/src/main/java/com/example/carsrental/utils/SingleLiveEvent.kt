@@ -26,7 +26,6 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
         super.removeObservers(owner)
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun removeObserver(observer: Observer<in T>) {
         observers.removeIf { it == observer }
     }

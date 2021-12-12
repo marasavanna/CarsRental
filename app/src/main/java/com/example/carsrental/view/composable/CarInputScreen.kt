@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import coil.compose.rememberImagePainter
 import com.example.carsrental.R
-import com.example.carsrental.utils.ImageUtils.toBitmap
+import com.example.carsrental.utils.toBitmap
 
 import com.example.carsrental.viewmodel.CarInputViewModel
 import com.example.carsrental.viewmodel.EditCarViewModel
