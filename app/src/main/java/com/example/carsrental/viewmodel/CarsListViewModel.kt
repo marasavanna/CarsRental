@@ -40,4 +40,8 @@ class CarsListViewModel(val carRepository: CarRepository) : ViewModel() {
     fun fetchCarsData() {
         carRepository.getSyncedCars(_cars, _exception)
     }
+
+    fun syncOfflineData() {
+        fetchCarsData()
+    }
 }

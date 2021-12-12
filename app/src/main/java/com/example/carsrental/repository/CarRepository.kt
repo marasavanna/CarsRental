@@ -29,7 +29,7 @@ class CarRepository(
         }
     }
 
-    fun getCars(carsList: MutableLiveData<MutableList<Car>>, exception: MutableLiveData<String>) {
+    private fun getCars(carsList: MutableLiveData<MutableList<Car>>, exception: MutableLiveData<String>) {
         carService.getCars().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 val cars = carMapper.mapResponseToCars(it).toMutableList()
