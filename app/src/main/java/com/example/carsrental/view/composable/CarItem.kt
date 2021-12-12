@@ -1,7 +1,11 @@
-package com.example.carsrental
+package com.example.carsrental.view.composable
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -16,14 +20,19 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
+import com.example.carsrental.R
 import com.example.carsrental.model.Car
+import com.example.carsrental.utils.ImageUtils.toBitmap
 import com.example.carsrental.viewmodel.CarsListViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -31,7 +40,7 @@ import com.example.carsrental.viewmodel.CarsListViewModel
 fun CarItemsList(viewModel: CarsListViewModel) {
     val cars by viewModel.cars.observeAsState(mutableListOf())
     LazyColumn {
-        itemsIndexed(items = cars, key = { index, item ->
+        itemsIndexed(items = cars, key = { _, item ->
             item.id.toString()
         }) { _, item ->
             val state = rememberDismissState(
@@ -41,7 +50,7 @@ fun CarItemsList(viewModel: CarsListViewModel) {
                     } else if (it == DismissValue.DismissedToEnd) {
                         viewModel.onEditCar(item)
                     }
-                    true
+                    false
                 }
             )
             SwipeToDismiss(state = state, background = {
@@ -133,9 +142,12 @@ fun CarItem(car: Car) {
         modifier = Modifier
             .height(280.dp)
             .padding(8.dp)
+            .clip( shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
             .fillMaxWidth()
     ) {
-        CarImage(car.image ?: "")
+
+        val context = LocalContext.current
+        CarImage(car.image.toBitmap(context))
         val rectangleModifier = Modifier
             .align(Alignment.BottomCenter)
             .fillMaxWidth()
@@ -147,19 +159,16 @@ fun CarItem(car: Car) {
 }
 
 @Composable
-fun CarImage(image: String) {
+fun CarImage(image: Bitmap) {
     val painter = rememberImagePainter(
         data = image,
         builder = {
-            placeholder(R.drawable.ic_launcher_foreground)
+            placeholder(R.drawable.image_placeholder)
             crossfade(1500)
-            transformations(
-                RoundedCornersTransformation(25f, 25f)
-            )
         })
     Image(
-        painter = painter, contentDescription = "Car Image",
-        Modifier.fillMaxHeight()
+        painter = painter, contentDescription = "Car Image",   contentScale = ContentScale.Crop,
+        modifier = Modifier.fillMaxSize()
     )
 }
 

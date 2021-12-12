@@ -8,6 +8,7 @@ object PreferenceHelper {
     const val prefsName = "CarsRentalPrefs"
     const val token = "token"
     const val userEmail = "userEmail"
+    const val userId = "userId"
 
     fun customPrefs(context: Context, name: String): SharedPreferences =
         context.getSharedPreferences(name, Context.MODE_PRIVATE)

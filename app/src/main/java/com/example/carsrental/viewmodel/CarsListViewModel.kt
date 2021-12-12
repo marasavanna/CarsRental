@@ -3,10 +3,15 @@ package com.example.carsrental.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.carsrental.mapper.CarMapper
 import com.example.carsrental.model.Car
+import com.example.carsrental.repository.CarRepository
 import com.example.carsrental.utils.SingleLiveEvent
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
+import java.lang.Exception
 
-class CarsListViewModel : ViewModel() {
+class CarsListViewModel(val carRepository: CarRepository) : ViewModel() {
 
     private val _cars = MutableLiveData<MutableList<Car>>()
     var cars: LiveData<MutableList<Car>> = _cars
@@ -14,17 +19,15 @@ class CarsListViewModel : ViewModel() {
     private val _searchKey = MutableLiveData("")
     var searchKey: LiveData<String> = _searchKey
 
+    private val _exception = MutableLiveData<String>()
+    var exception: LiveData<String> = _exception
+
     var carToEdit = SingleLiveEvent<Car>()
 
-
-    init {
-        fetchCarsData()
-    }
 
     fun onCarsSearched(searchKey: String) {
         _searchKey.value = searchKey
     }
-
 
     fun onCarSwipedToDelete(car: Car) {
         _cars.value = cars.value?.filter { it != car }?.toMutableList()
@@ -34,18 +37,7 @@ class CarsListViewModel : ViewModel() {
         carToEdit.value = car
     }
 
-    private fun fetchCarsData() {
-        val cars = mutableListOf<Car>()
-        for (i in 0..8) {
-            cars.add(
-                Car(
-                    i, "Lamorghini",
-                    "Galardo", 2020, "blue",
-                    "https://car-pictures-download.com/wp-content/uploads/McLaren-570S-Coupe-wallpaper-4K-Ultra-HD.jpg",
-                    true, "88"
-                )
-            )
-        }
-        _cars.value = cars
+    fun fetchCarsData() {
+        carRepository.getSyncedCars(_cars, _exception)
     }
 }

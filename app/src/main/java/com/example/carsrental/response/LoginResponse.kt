@@ -1,5 +1,7 @@
 package com.example.carsrental.response
 
+import com.google.gson.annotations.Expose
+
 data class LoginResponse(
-    val userId: String?, val token: String?, val error: String?
+    @Expose val id: String?, @Expose val token: String?
 )

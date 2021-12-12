@@ -3,11 +3,16 @@ package com.example.carsrental.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.carsrental.repository.AuthRepository
+import com.example.carsrental.request.LoginRequest
 import com.example.carsrental.utils.Extensions.isValidEmail
 import com.example.carsrental.utils.Extensions.isValidPassword
 import com.example.carsrental.response.LoginResponse
+import com.example.carsrental.utils.PreferenceHelper
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 
-class AuthenticationViewModel : ViewModel() {
+class AuthenticationViewModel(val authRepository: AuthRepository) : ViewModel() {
     private val _textEmail = MutableLiveData<String>()
     var textEmail: MutableLiveData<String> = _textEmail
     private val _isEmailValid = MutableLiveData<Boolean>()
@@ -52,7 +57,14 @@ class AuthenticationViewModel : ViewModel() {
 
 
     fun login() {
-        
-        _loginResponse.value = LoginResponse("99", "betoken", "")
+        authRepository.login(
+            LoginRequest(
+                textEmail.value, textPassword.value
+            )
+        ).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
+           _loginResponse.value = it
+        }, {
+
+        })
     }
 }

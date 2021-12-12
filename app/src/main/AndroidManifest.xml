@@ -3,7 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.carsrental">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".MainApplication"
@@ -17,6 +24,9 @@
         android:theme="@style/Theme.CarsRental"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".view.activity.AddCarActivity"
+            android:exported="false" />
         <activity
             android:name=".view.activity.EditCarActivity"
             android:exported="false" />
